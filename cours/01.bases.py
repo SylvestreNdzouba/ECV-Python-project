@@ -41,6 +41,7 @@ int
 str
 float
 bool
+list
 
 nb_error = "3.10"
 nb = float(nb_error)
