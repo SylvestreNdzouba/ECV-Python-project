@@ -1,16 +1,17 @@
 print("\n")
 
-class Voiture:
-    # attributs (variables d'une classe)
-
-    # constructeur
-    def __init__(self, couleur = "blanc", vitesse_bridage = 250):
+class Voituressssss:
+    
+    _couleurs_autor = ["rouge", "bleue", "verte", "blanche"]
+    
+    def __init__(self, couleur = "blanche", vitesse_bridage = 250):
         self.nb_roues = 4
         self._vitesse_max = 250
         self._vitesse_actuelle = 0
         self.couleur = couleur
         self.demarree = False
         self.brider(vitesse_bridage)
+        self.changer_couleur(couleur)
         self.klaxonner()
         
     def __str__(self):
@@ -22,6 +23,10 @@ class Voiture:
     
     def set_vitesse_max(self, nouvelle_vit_max):
         self.brider(nouvelle_vit_max)
+    
+    def changer_couleur(self, couleur):
+        if (couleur in type(self)._couleurs_autor):
+            self.couleur = couleur
     
     def demarrer(self):
         # if self.demarree == False:
@@ -72,9 +77,13 @@ une_voiture = Voiture()
 # print(ta_voiture)
 # print(une_voiture)
 
-ma_voiture.demarrer()
-ma_voiture.rouler(200)
+# ma_voiture.demarrer()
+# ma_voiture.rouler(200)
 
-ta_voiture.demarrer()
-ta_voiture._vitesse_max = 10000
-ta_voiture.set_vitesse_max(10000)
+# ta_voiture.demarrer()
+# ta_voiture._vitesse_max = 10000
+# ta_voiture.set_vitesse_max(10000)
+
+ma_voiture._couleurs_autor.append("noire")
+print(ma_voiture._couleurs_autor)
+print(ta_voiture._couleurs_autor)
