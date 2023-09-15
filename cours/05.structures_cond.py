@@ -45,13 +45,15 @@ elif (age >= 18) and (age < 70):
 elif (age >= 70):
     print("Statut sénior")
     
+# if (not age > 18):
+#     print("Adulte")
+    
 note = -1
 absence = False
 triche = True
 
-# not
-
-if (absence == True) or (triche == True):
+# if (absence == True) and (triche == True): # Inverse
+if not ((absence == False) and (triche == False)):
     note = 0
 else:
     note = int(input("Saisir la note de l'élève: "))
