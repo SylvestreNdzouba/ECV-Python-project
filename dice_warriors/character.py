@@ -1,3 +1,4 @@
+from __future__ import annotations
 from dice import Dice, RiggedDice
 
 print("\n")
@@ -6,7 +7,9 @@ print("\n")
 class Character:
     _label = "Character"
 
-    def __init__(self, name, max_health, attack, defense, dice):
+    def __init__(
+        self, name: str, max_health: int, attack: int, defense: int, dice: Dice
+    ):
         self._name = name
         self._max_health = max_health
         self._health = self._max_health
@@ -16,6 +19,12 @@ class Character:
 
     def __str__(self):
         return f"{type(self)._label} {self._name} is starting the fight with {self._health}/{self._max_health}hp ({self._attack_value}atk / {self._defense_value}def)"
+
+    def get_name(self):
+        return self._name
+
+    def get_defense_value(self):
+        return self._defense_value
 
     def is_alive(self):
         return self._health > 0
@@ -33,26 +42,26 @@ class Character:
         self._health = self._health - amount
         self.show_healthbar()
 
-    def compute_damages(self, roll):
+    def compute_damages(self, target: Character, roll: int) -> int:
         return self._attack_value + roll
 
-    def attack(self, target):
+    def attack(self, target: Character):
         if self.is_alive():
             roll = self._dice.roll()
-            damages = self.compute_damages(roll)
+            damages = self.compute_damages(target, roll)
             print(
-                f"⚔️ {type(self)._label}  {self._name} attack with {damages} damages ! (attack: {self._attack_value} + roll: {roll})"
+                f"⚔️ {type(self)._label}  {self._name} attack {target.get_name()} with {damages} damages ! (attack: {self._attack_value} + roll: {roll})"
             )
-            target.defense(damages)
+            target.defense(self, damages)
 
     def compute_defense(self, damages, roll):
         return damages - self._defense_value - roll
 
-    def defense(self, damages):
+    def defense(self, attacker: Character, damages: int):
         roll = self._dice.roll()
         wounds = self.compute_defense(damages, roll)
         print(
-            f"🛡️ {type(self)._label} {self._name} defend against {damages} damages and take {wounds} wounds ! (damages: {damages} - defense: {self._defense_value} - roll: {roll})"
+            f"🛡️ {type(self)._label} {self._name} defend against {attacker.get_name()} for {damages} damages and take {wounds} wounds ! (damages: {damages} - defense: {self._defense_value} - roll: {roll})"
         )
         self.decrease_health(wounds)
 
@@ -60,9 +69,9 @@ class Character:
 class Warrior(Character):
     _label = "Warrior"
 
-    def compute_damages(self, roll):
+    def compute_damages(self, target, roll):
         print(f"🪓 Axe in face ! (bonus: +3)")
-        return super().compute_damages(roll) + 3
+        return super().compute_damages(target, roll) + 3
 
 
 class Mage(Character):
@@ -75,13 +84,15 @@ class Mage(Character):
 
 class Thief(Character):
     _label = "Thief"
-    
-    
+
+    def compute_damages(self, target: Character, roll: int) -> int:
+        print(f"🤶 Sneacky sneacky... ! (bonus: +{target.get_defense_value()})")
+        return super().compute_damages(target, roll) + target.get_defense_value()
 
 
 if __name__ == "__main__":
-    char_1 = Warrior("James", 20, 8, 3, Dice(6))
-    char_2 = Mage("Dina", 20, 8, 3, Dice(6))
+    char_1: Warrior = Warrior("James", 20, 8, 3, Dice(6))
+    char_2: Thief = Thief("Dina", 20, 8, 3, Dice(6))
 
     print(char_1)
     print(char_2)
