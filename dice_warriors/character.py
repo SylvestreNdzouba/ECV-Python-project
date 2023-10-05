@@ -1,7 +1,6 @@
 from dice import Dice, RiggedDice
 print("\n")
 
-
 class Character:
 
     _label = "Character"
@@ -32,11 +31,15 @@ class Character:
         self._health = self._health - amount
         self.show_healthbar()
 
+    def compute_damages(self, roll):
+        return self._attack_value + roll
+
     def attack(self, target):
         if (self.is_alive()):
-            damages = self._attack_value + self._dice.roll()
+            roll = self._dice.roll()
+            damages = self.compute_damages(roll)
             print(
-                f"⚔️ {type(self)._label}  {self._name} attack with {damages} damages !")
+                f"⚔️ {type(self)._label}  {self._name} attack with {damages} damages ! (attack: {self._attack_value} + roll: {roll})")
             target.defense(damages)
 
     def defense(self, damages):
@@ -49,10 +52,14 @@ class Character:
 class Warrior(Character):
     _label = "Warrior"
 
+    def compute_damages(self, roll):
+        print(f"Axe in face ! (bonus: +3)")
+        return super().compute_damages(roll) + 3
 
 class Mage(Character):
     _label = "Mage"
-
+    
+    # bonus de -3 damages à la défense
 
 class Thief(Character):
     _label = "Thief"
