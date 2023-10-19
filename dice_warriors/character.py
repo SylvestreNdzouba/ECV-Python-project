@@ -1,6 +1,8 @@
 from __future__ import annotations
 from dice import Dice, RiggedDice
 
+from rich import print
+
 print("\n")
 
 
